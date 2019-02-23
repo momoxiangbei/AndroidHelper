@@ -1,10 +1,9 @@
-package com.mmxb.mhelper.floatwindow
+package com.mmxb.helper.floatwindow
 
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import android.view.WindowManager
 
 /**
  * Created by mmxb on 2019/2/20

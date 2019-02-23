@@ -1,4 +1,4 @@
-package com.mmxb.mhelper.floatwindow
+package com.mmxb.helper.floatwindow
 
 import android.content.Context
 import android.graphics.Color
@@ -6,13 +6,12 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
-import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 
-import com.mmxb.mhelper.MainWindow
-import com.mmxb.mhelper.R
+import com.mmxb.helper.main.ui.MainWindow
+import com.mmxb.helper.R
 
 /**
  * Created by mmxb on 2019/2/20

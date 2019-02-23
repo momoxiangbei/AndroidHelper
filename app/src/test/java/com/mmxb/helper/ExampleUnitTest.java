@@ -1,4 +1,4 @@
-package com.mmxb.mhelper;
+package com.mmxb.helper;
 
 import org.junit.Test;
 

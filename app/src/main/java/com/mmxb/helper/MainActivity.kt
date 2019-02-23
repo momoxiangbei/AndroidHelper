@@ -1,4 +1,4 @@
-package com.mmxb.mhelper
+package com.mmxb.helper
 
 import android.content.Intent
 import android.net.Uri
@@ -9,9 +9,10 @@ import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import com.mmxb.helper.floatwindow.FloatWindowService
+import com.mmxb.helper.shell.ShellUtil
+import org.jetbrains.anko.toast
 
-import com.mmxb.mhelper.floatwindow.FloatWindow
-import com.mmxb.mhelper.floatwindow.FloatWindowService
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun test(view: View) {
+        // todo test
+        toast("tes")
+    }
+
+    fun floatWindow(view: View) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Settings.canDrawOverlays(this)) {
                 startFloatWindowService()

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MHelper</string>
     <string name="helper">helper</string>
+    <string name="current_activity">当前的activity</string>
+    <string name="info">info</string>
+    <string name="setting">setting</string>
 </resources>

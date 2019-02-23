@@ -1,4 +1,4 @@
-package com.mmxb.mhelper;
+package com.mmxb.helper;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
