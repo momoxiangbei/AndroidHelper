@@ -6,5 +6,5 @@ class AppInfoBean : Serializable {
     var info = ""
     var packageName = ""
     var pid = ""
-    var currrentActivity = ""
+    var currentActivity = ""
 }

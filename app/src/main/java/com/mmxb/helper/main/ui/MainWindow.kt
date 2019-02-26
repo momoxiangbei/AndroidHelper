@@ -69,7 +69,7 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 appPackageTV.text = appInfo.packageName
 //                appNameTV.text = context.packageManager.getPackageInfo(appInfo.packageName, 0)
 
-                pagerAdapter.appInfoView.setAppInfo(appInfo.currrentActivity)
+                pagerAdapter.appInfoView.setAppInfo(appInfo.currentActivity)
                 pagerAdapter.notifyDataSetChanged()
             }
         })

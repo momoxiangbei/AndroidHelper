@@ -13,7 +13,7 @@ object ShellResultParse {
         }
         val appInfo = AppInfoBean()
         appInfo.packageName = activityInfo.substringAfter("ACTIVITY ").substringBefore("/")
-        appInfo.currrentActivity = activityInfo.substringAfter("ACTIVITY ").substringBefore(" ").replace("/", ".")
+        appInfo.currentActivity = activityInfo.substringAfter("ACTIVITY ").substringBefore(" ").replace("/", ".")
         appInfo.pid = activityInfo.substringAfter("pid=")
         return appInfo
     }
