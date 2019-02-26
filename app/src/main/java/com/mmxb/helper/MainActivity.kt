@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.mmxb.helper.floatwindow.FloatWindowService
-import com.mmxb.helper.shell.ShellUtil
 import org.jetbrains.anko.toast
 
 

@@ -1,27 +1,32 @@
 package com.mmxb.helper.shell
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import com.jaredrummler.android.shell.Shell
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.functions.Consumer
+import com.mmxb.helper.HelperApplication
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 
-class ShellManager private constructor() {
-    companion object {
-        val instance: ShellManager = ShellManager()
-    }
+object ShellManager {
 
     @SuppressLint("CheckResult")
     fun run(shellCommand: String, callBack: CallBack) {
-        Observable.create(ObservableOnSubscribe<String> {
+        if (!isRoot()) {
+            Toast.makeText(HelperApplication.instance, "not root", Toast.LENGTH_LONG).show()
+
+        }
+        doAsync {
             val result = Shell.SU.run(shellCommand)
             if (result.isSuccessful) {
-                ShellResultParse.getTopActivity(result.getStdout())
+                uiThread {
+                    callBack.success(result.getStdout())
+                }
             }
-        }).subscribe(Consumer {
-            callBack.success(it)
-        })
+        }
     }
 
+    fun isRoot(): Boolean {
+        return Shell.SU.available()
+    }
 }
