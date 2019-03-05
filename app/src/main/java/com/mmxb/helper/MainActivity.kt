@@ -6,10 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.annotation.RequiresApi
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.mmxb.helper.floatwindow.FloatWindowService
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
 
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
     }
 
     fun test(view: View) {

@@ -1,29 +1,28 @@
 package com.mmxb.helper.floatwindow
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
-
-import com.mmxb.helper.main.ui.MainWindow
 import com.mmxb.helper.R
+import com.mmxb.helper.main.ui.MainWindow
+import com.mmxb.helper.util.ScreenUtil
 
 /**
  * Created by mmxb on 2019/2/20
  */
-class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr) {
+class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
+    : LinearLayout(context, attrs, defStyleAttr) {
 
-    // todo 弹性动画
-
-    private var manager: WindowManager? = null
-    private var params: WindowManager.LayoutParams? = null
-    private var rawX: Int = 0
-    private var rawY: Int = 0
+    private var manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    private var params = WindowManager.LayoutParams()
+    private var rawX = 0
+    private var rawY = 0
+    private var startRawX = 0
+    private var startRawY = 0
 
     init {
         initView()
@@ -32,38 +31,37 @@ class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
 
     private fun initView() {
-        val textView = TextView(context)
-        textView.setText(R.string.helper)
-        textView.setBackgroundColor(Color.GREEN)
-        textView.setOnClickListener {
+        val imageView = ImageView(context)
+        imageView.setImageResource(R.mipmap.ic_flower)
+        imageView.setOnClickListener {
             remove()
             MainWindow(context).show()
         }
-        addView(textView)
+        addView(imageView)
     }
 
     @Suppress("DEPRECATION")
     private fun initManager() {
-        manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        params = WindowManager.LayoutParams()
-        params!!.gravity = Gravity.END
-        params!!.width = WindowManager.LayoutParams.WRAP_CONTENT
-        params!!.height = WindowManager.LayoutParams.WRAP_CONTENT
+        // 默认的gravity  Gravity.NO_GRAVITY ，坐标的原点在屏幕中间
+        params.x = ScreenUtil.getSreenHeight(context) / 2
+        params.y = ScreenUtil.getSreenHeight(context) / 5
+        params.width = WindowManager.LayoutParams.WRAP_CONTENT
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT
         //  params.flags 这两个属性很重要，避免了悬浮球全屏显示
-        params!!.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            params!!.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
-            params!!.type = WindowManager.LayoutParams.TYPE_PHONE
+            params.type = WindowManager.LayoutParams.TYPE_PHONE
         }
     }
 
     fun show() {
-        manager!!.addView(this, params)
+        manager.addView(this, params)
     }
 
     fun remove() {
-        manager!!.removeView(this)
+        manager.removeView(this)
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -71,17 +69,37 @@ class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSe
             MotionEvent.ACTION_DOWN -> {
                 rawX = event.rawX.toInt()
                 rawY = event.rawY.toInt()
+                startRawX = rawX
+                startRawY = rawY
             }
             MotionEvent.ACTION_MOVE -> {
-                params!!.x = params!!.x + (event.rawX - rawX).toInt()
-                params!!.y = params!!.y + (event.rawY - rawY).toInt()
+                val moveX = (event.rawX - rawX).toInt()
+                val moveY = (event.rawY - rawY).toInt()
+                params.x = params.x + moveX
+                params.y = params.y + moveY
                 rawX = event.rawX.toInt()
                 rawY = event.rawY.toInt()
-                manager!!.updateViewLayout(this, params)
+                manager.updateViewLayout(this, params)
             }
-            else -> {
+            MotionEvent.ACTION_UP -> {
+                if (Math.abs(startRawX - rawX) > 8 || Math.abs(startRawY - rawY) > 8) {
+                    scrollToSide()
+                    // 消费掉事件，也就不会调用到view的onclick方法
+                    return true
+                } else {
+                    return super.dispatchTouchEvent(event)
+                }
             }
         }
         return super.dispatchTouchEvent(event)
+    }
+
+    private fun scrollToSide() {
+        if (rawX > ScreenUtil.getSreenWidth(context) / 2) {
+            params.x = ScreenUtil.getSreenWidth(context) / 2
+        } else {
+            params.x = -ScreenUtil.getSreenWidth(context) / 2
+        }
+        manager.updateViewLayout(this, params)
     }
 }

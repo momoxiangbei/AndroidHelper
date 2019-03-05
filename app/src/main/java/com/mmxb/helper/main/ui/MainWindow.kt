@@ -4,10 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.WindowManager
+import android.view.*
 import android.widget.LinearLayout
 import com.mmxb.helper.R
 import com.mmxb.helper.bean.AppInfoBean
@@ -15,7 +12,9 @@ import com.mmxb.helper.floatwindow.FloatWindowService
 import com.mmxb.helper.shell.CallBack
 import com.mmxb.helper.shell.ShellManager
 import com.mmxb.helper.shell.ShellResultParse
-import kotlinx.android.synthetic.main.layout_float_window.view.*
+import kotlinx.android.synthetic.main.layout_main_window.view.*
+import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.doAsync
 
 /**
  * Created by mmxb on 2019/2/20
@@ -36,7 +35,7 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
     }
 
     private fun initView() {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_float_window, this, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.layout_main_window, this, false)
         viewpager = view.findViewById(R.id.viewpager)
         pagerAdapter = MainPagerAdapter(context)
         viewpager.adapter = pagerAdapter
@@ -69,6 +68,8 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 appPackageTV.text = appInfo.packageName
 //                appNameTV.text = context.packageManager.getPackageInfo(appInfo.packageName, 0)
 
+                closeIV.setOnClickListener { remove() }
+
                 pagerAdapter.appInfoView.setAppInfo(appInfo.currentActivity)
                 pagerAdapter.notifyDataSetChanged()
             }
@@ -83,12 +84,14 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
     fun remove() {
         manager.removeView(this)
+        FloatWindowService.floatWindow.show()
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.keyCode == KeyEvent.KEYCODE_BACK || event.keyCode == KeyEvent.KEYCODE_SETTINGS) {
-            remove()
-            FloatWindowService.showFloatWindow()
+            doAsync {
+                initData()
+            }
         }
         return super.dispatchKeyEvent(event)
     }
@@ -96,6 +99,7 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
     fun setWindowManager(manager: WindowManager) {
         this.manager = manager
     }
+
 }
 
 
