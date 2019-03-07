@@ -66,9 +66,11 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 appInfo = ShellResultParse.getAppInfo(result)
                 appIconIV.setImageDrawable(context.packageManager.getApplicationIcon(appInfo.packageName))
                 appPackageTV.text = appInfo.packageName
-//                appNameTV.text = context.packageManager.getPackageInfo(appInfo.packageName, 0)
+                appNameTV.text = context.packageManager.getApplicationLabel(context.applicationInfo)
 
-                closeIV.setOnClickListener { remove() }
+                closeIV.setOnClickListener {
+                    remove()
+                }
 
                 pagerAdapter.appInfoView.setAppInfo(appInfo.currentActivity)
                 pagerAdapter.notifyDataSetChanged()
@@ -99,6 +101,7 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
     fun setWindowManager(manager: WindowManager) {
         this.manager = manager
     }
+
 
 }
 

@@ -1,12 +1,12 @@
 package com.mmxb.helper.floatwindow
 
 import android.content.Context
+import android.graphics.PixelFormat
 import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.LinearLayout
 import com.mmxb.helper.R
 import com.mmxb.helper.main.ui.MainWindow
 import com.mmxb.helper.util.ScreenUtil
@@ -15,7 +15,7 @@ import com.mmxb.helper.util.ScreenUtil
  * Created by mmxb on 2019/2/20
  */
 class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : LinearLayout(context, attrs, defStyleAttr) {
+    : ImageView(context, attrs, defStyleAttr) {
 
     private var manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private var params = WindowManager.LayoutParams()
@@ -31,13 +31,11 @@ class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
 
     private fun initView() {
-        val imageView = ImageView(context)
-        imageView.setImageResource(R.mipmap.ic_flower)
-        imageView.setOnClickListener {
+        setOnClickListener {
             remove()
             MainWindow(context).show()
         }
-        addView(imageView)
+        setImageResource(R.drawable.ic_float_window)
     }
 
     @Suppress("DEPRECATION")
@@ -49,6 +47,8 @@ class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSe
         params.height = WindowManager.LayoutParams.WRAP_CONTENT
         //  params.flags 这两个属性很重要，避免了悬浮球全屏显示
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        //设置效果为背景透明.
+        params.format = PixelFormat.RGBA_8888
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {

@@ -61,5 +61,5 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
-        android:src="@mipmap/ic_close" />
+        android:src="@drawable/ic_close" />
 </RelativeLayout>

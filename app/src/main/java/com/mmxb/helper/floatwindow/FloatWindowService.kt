@@ -34,13 +34,14 @@ class FloatWindowService : Service() {
     }
 
     private fun buildNotification(context: Context, title: String, content: String): Notification? {
-        // todo 静音 不显示弹窗 4.4.4系统不可被清除的适配
+        // todo  4.4.4系统不可被清除的适配
         val channelId = "1024"
         val channelName = "androidDeveloperHelper"
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         // android 8.0开始 构建notification需要指定channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+            // IMPORTANCE_LOW 不显示通知dialog弹窗
+            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
             channel.enableLights(false)
             channel.setShowBadge(false)
             notificationManager.createNotificationChannel(channel)
@@ -55,8 +56,6 @@ class FloatWindowService : Service() {
                 .setContentText(content)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher))
-                .setVibrate(null)
-                .setSound(null)
                 .build()
         notification.flags = Notification.FLAG_ONGOING_EVENT or Notification.FLAG_NO_CLEAR or Notification.FLAG_FOREGROUND_SERVICE
         return notification
@@ -67,8 +66,8 @@ class FloatWindowService : Service() {
     }
 
     override fun onDestroy() {
+        floatWindow.remove()
         super.onDestroy()
-
     }
 
 }
