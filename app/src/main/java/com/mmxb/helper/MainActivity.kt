@@ -7,19 +7,21 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.annotation.RequiresApi
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
-import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
 import android.widget.Toast
 import com.mmxb.helper.floatwindow.FloatWindowService
+import com.mmxb.helper.service.MyAccessibilityService
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.layout_switch_view.view.*
-import org.jetbrains.anko.toast
 
 
 class MainActivity : AppCompatActivity() {
+
+    val REQUSET_CODE_FLOAT_WINDOW = 1
+    val REQUEST_CODE_ACCESS_SERVICE = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +29,12 @@ class MainActivity : AppCompatActivity() {
         initData()
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun initData() {
+
         val sp = this.getSharedPreferences("helper", Context.MODE_PRIVATE)
         val isOpenSwitchWindow = sp.getBoolean("switchFloatWindow", false)
         switchFloatWindow.setChecked(isOpenSwitchWindow)
@@ -36,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             applyFloatWindowPermission()
         }
 
+        // todo 版本兼容
         switchFloatWindow.setOnCheckedChangeListener(OnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 applyFloatWindowPermission()
@@ -44,6 +52,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.open_float_window_permission), Toast.LENGTH_LONG).show()
             }
         })
+
+        switchAccessibilityService.setOnCheckedChangeListener(OnCheckedChangeListener { _, _ ->
+            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivityForResult(intent, REQUEST_CODE_ACCESS_SERVICE)
+        })
     }
 
     private fun applyFloatWindowPermission() {
@@ -51,7 +65,9 @@ class MainActivity : AppCompatActivity() {
             if (Settings.canDrawOverlays(this)) {
                 startFloatWindowService()
             } else {
-                startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")), 0)
+                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivityForResult(intent, REQUSET_CODE_FLOAT_WINDOW)
             }
         } else {
             startFloatWindowService()
@@ -66,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0) {
+        if (requestCode == REQUSET_CODE_FLOAT_WINDOW) {
             if (Settings.canDrawOverlays(this)) {
                 startFloatWindowService()
                 val edit = getSharedPreferences("helper", Context.MODE_PRIVATE).edit()
@@ -75,14 +91,17 @@ class MainActivity : AppCompatActivity() {
                 switchFloatWindow.setChecked(true)
             } else {
                 switchFloatWindow.setChecked(false)
-                Toast.makeText(this, getString(R.string.please_oppen_f_w_permission), Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.please_open_f_w_permission), Toast.LENGTH_LONG).show()
             }
+        } else if (requestCode == REQUEST_CODE_ACCESS_SERVICE) {
+            Toast.makeText(this, "aaa", Toast.LENGTH_LONG).show()
         }
     }
 
     fun close(view: View) {
         stopService(Intent(this@MainActivity, FloatWindowService::class.java))
     }
+
 
 }
 

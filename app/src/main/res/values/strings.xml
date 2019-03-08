@@ -4,12 +4,15 @@
     <string name="current_activity">当前的activity</string>
     <string name="info">info</string>
     <string name="setting">setting</string>
-    <string name="float_window_permission">打开悬浮窗权限（必选）</string>
-    <string name="float_window_permission_tip">显示在其他应用的上层，用来显示当前应用的信息</string>
+    <string name="float_window_permission">悬浮窗权限</string>
+    <string name="float_window_permission_tip">用于显示在其他应用的上层，展示当前应用的信息</string>
     <string name="android_help">Android开发者助手</string>
     <string name="must_permission">必须开启的权限</string>
     <string name="suggest_permission">建议开启的权限</string>
     <string name="open_float_window_permission">已经打开悬浮窗权限</string>
-    <string name="please_oppen_f_w_permission">请打开悬浮窗权限</string>
+    <string name="please_open_f_w_permission">请打开悬浮窗权限</string>
     <string name="close_float_window">关闭悬浮球</string>
+    <string name="access_service_permission">用于当前应用的页面布局分析等</string>
+    <string name="access_service_permission_tip">无障碍辅助服务</string>
+
 </resources>

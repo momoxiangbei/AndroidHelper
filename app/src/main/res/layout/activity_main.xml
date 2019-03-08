@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/must_permission"
         android:textColor="@color/colorPrimary"
         android:textSize="13sp" />
@@ -34,22 +34,37 @@
         app:text_info="@string/float_window_permission_tip"
         app:text_title="@string/float_window_permission" />
 
+    <com.mmxb.helper.view.SwitchView
+        android:id="@+id/switchAccessibilityService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:text_info="@string/access_service_permission"
+        app:text_title="@string/access_service_permission_tip" />
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="@string/suggest_permission"
         android:textColor="@color/colorPrimary"
         android:textSize="13sp" />
+
+    <com.mmxb.helper.view.SwitchView
+        android:id="@+id/switchRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:text_info="推荐开启，否则一些功能无法使用"
+        app:text_title="root权限" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
 
     <Button
         android:layout_width="match_parent"

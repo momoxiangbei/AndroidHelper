@@ -5,8 +5,6 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-    <!-- todo -->
-
     <application
         android:name=".HelperApplication"
         android:allowBackup="true"
@@ -15,8 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/accessibility_config" />
+
         <activity
-            android:name="com.mmxb.helper.MainActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +28,24 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.mmxb.helper.floatwindow.FloatWindowService" />
         <receiver android:name=".receiver.NotificationClickReceiver">
             <intent-filter>
                 <action android:name="NOTIFICATION_CLICK_RECEIVER" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".floatwindow.FloatWindowService" />
+
+        <service android:label="@string/android_help"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:name=".service.MyAccessibilityService">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_config"/>
+        </service>
     </application>
 
 </manifest>
