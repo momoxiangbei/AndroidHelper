@@ -3,6 +3,7 @@ package com.mmxb.helper.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.CompoundButton
 import android.widget.FrameLayout
 import com.mmxb.helper.R
@@ -24,17 +25,17 @@ class SwitchView : FrameLayout {
 
     private fun initView() {
         LayoutInflater.from(context).inflate(R.layout.layout_switch_view, this, true)
-        // todo status
-        permissionButton.isChecked = true
-
-
     }
 
     fun setOnCheckedChangeListener(listener: CompoundButton.OnCheckedChangeListener) {
         permissionButton.setOnCheckedChangeListener(listener)
     }
 
-    fun setChecked(checked: Boolean) {
+    fun setBtnChecked(checked: Boolean) {
         permissionButton.isChecked = checked
+    }
+
+    fun setViewChecked(visibility: Boolean) {
+        checkedView.visibility = if (visibility) View.VISIBLE else View.GONE
     }
 }

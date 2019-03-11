@@ -21,8 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="40dp"
         android:text="@string/must_permission"
         android:textColor="@color/colorPrimary"
         android:textSize="13sp" />
@@ -31,6 +30,7 @@
         android:id="@+id/switchFloatWindow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:text_info="@string/float_window_permission_tip"
         app:text_title="@string/float_window_permission" />
 
@@ -38,7 +38,7 @@
         android:id="@+id/switchAccessibilityService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         app:text_info="@string/access_service_permission"
         app:text_title="@string/access_service_permission_tip" />
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:text="@string/suggest_permission"
         android:textColor="@color/colorPrimary"
         android:textSize="13sp" />
@@ -57,7 +57,7 @@
         android:id="@+id/switchRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         app:text_info="推荐开启，否则一些功能无法使用"
         app:text_title="root权限" />
 
@@ -67,11 +67,18 @@
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/openBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="16dp"
-        android:onClick="close"
-        android:text="@string/close_float_window" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_button"
+        android:onClick="openFloatWindow"
+        android:text="@string/close_float_window"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
