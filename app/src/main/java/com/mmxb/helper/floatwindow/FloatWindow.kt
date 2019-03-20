@@ -7,9 +7,12 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.Toast
+import com.mmxb.helper.HelperApplication
 import com.mmxb.helper.R
 import com.mmxb.helper.main.ui.MainWindow
 import com.mmxb.helper.util.ScreenUtil
+import java.lang.Exception
 
 /**
  * Created by mmxb on 2019/2/20
@@ -33,7 +36,8 @@ class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSe
     private fun initView() {
         setOnClickListener {
             remove()
-            MainWindow(context).show()
+            MainWindow.instance = MainWindow(context)
+            MainWindow.instance?.show()
         }
         setImageResource(R.drawable.ic_float_window)
     }
@@ -61,7 +65,11 @@ class FloatWindow @JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     fun remove() {
-        manager.removeView(this)
+        try {
+            manager.removeView(this)
+        }catch (e:Exception){
+            // tood kill service
+        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {

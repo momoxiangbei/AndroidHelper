@@ -1,5 +1,6 @@
 package com.mmxb.helper.floatwindow
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -15,7 +16,7 @@ import com.mmxb.helper.R
 /**
  * Created by mmxb on 2019/2/20
  */
-class FloatWindowService : Service() {
+class FloatWindowService : Service(){
 
     companion object {
         lateinit var floatWindow: FloatWindow

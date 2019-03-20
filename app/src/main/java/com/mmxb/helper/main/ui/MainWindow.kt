@@ -1,19 +1,23 @@
 package com.mmxb.helper.main.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
-import android.view.*
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.LinearLayout
 import com.mmxb.helper.R
 import com.mmxb.helper.bean.AppInfoBean
+import com.mmxb.helper.bean.AppInfoModle
 import com.mmxb.helper.floatwindow.FloatWindowService
 import com.mmxb.helper.shell.CallBack
 import com.mmxb.helper.shell.ShellManager
 import com.mmxb.helper.shell.ShellResultParse
 import kotlinx.android.synthetic.main.layout_main_window.view.*
-import org.jetbrains.anko.custom.async
 import org.jetbrains.anko.doAsync
 
 /**
@@ -22,16 +26,31 @@ import org.jetbrains.anko.doAsync
 class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
     : LinearLayout(context, attrs, defStyleAttr) {
 
+    companion object {
+        @SuppressLint("StaticFieldLeak")
+        var instance: MainWindow? = null
+    }
+
+    private lateinit var model: AppInfoModle
+
+
     private lateinit var manager: WindowManager
     private lateinit var params: WindowManager.LayoutParams
     private lateinit var viewpager: ViewPager
     private lateinit var pagerAdapter: MainPagerAdapter
     private var appInfo = AppInfoBean()
 
+    private var isShowing = false
+
     init {
         initView()
         initManager()
-        initData()
+//        initData()
+    }
+
+
+    fun updateUi(packageName: String) {
+        appPackageTV.text = packageName
     }
 
     private fun initView() {
@@ -40,6 +59,10 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
         pagerAdapter = MainPagerAdapter(context)
         viewpager.adapter = pagerAdapter
         addView(view)
+        closeIV.setOnClickListener {
+            remove()
+        }
+
     }
 
     private fun initManager() {
@@ -68,31 +91,29 @@ class MainWindow @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 appPackageTV.text = appInfo.packageName
                 appNameTV.text = context.packageManager.getApplicationLabel(context.applicationInfo)
 
-                closeIV.setOnClickListener {
-                    remove()
-                }
+
 
                 pagerAdapter.appInfoView.setAppInfo(appInfo.currentActivity)
                 pagerAdapter.notifyDataSetChanged()
             }
         })
-
-
     }
 
     fun show() {
         manager.addView(this, params)
+        isShowing = true
     }
 
     fun remove() {
         manager.removeView(this)
         FloatWindowService.floatWindow.show()
+        isShowing = false
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.keyCode == KeyEvent.KEYCODE_BACK || event.keyCode == KeyEvent.KEYCODE_SETTINGS) {
             doAsync {
-                initData()
+                //                initData()
             }
         }
         return super.dispatchKeyEvent(event)

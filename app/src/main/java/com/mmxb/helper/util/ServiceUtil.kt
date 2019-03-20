@@ -5,7 +5,7 @@ import android.content.Context
 import android.provider.Settings
 import android.text.TextUtils
 import com.mmxb.helper.HelperApplication
-import com.mmxb.helper.service.MyAccessibilityService
+import com.mmxb.helper.accessibilityservice.HelperAccessibilityService
 
 object ServiceUtil {
     /**
@@ -37,7 +37,7 @@ object ServiceUtil {
     fun isAccessibilitySettingsOn(): Boolean {
         // todo
         var accessibilityEnabled = 0
-        val service = "com.mmxb.mhelper/" + MyAccessibilityService::class.java.canonicalName
+        val service = "com.mmxb.mhelper/" + HelperAccessibilityService::class.java.canonicalName
         try {
             accessibilityEnabled = Settings.Secure.getInt(
                     HelperApplication.instance.applicationContext.contentResolver,

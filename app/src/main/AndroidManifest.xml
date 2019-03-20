@@ -38,7 +38,7 @@
 
         <service android:label="@string/android_help"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:name=".service.MyAccessibilityService">
+            android:name=".accessibilityservice.HelperAccessibilityService">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService"/>
             </intent-filter>
